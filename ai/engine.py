@@ -118,12 +118,12 @@ class AIEngine:
     def _offline_response(self, message):
         msg = message.lower().strip()
 
-        greetings = r'^(bonjour|salut|hey|coucou|hello|hi|yo|bjr|slt)'
+        greetings = r'^(bonjour|salut|hey|coucou|hello|hi|yo|bjr|slt|cc)'
         if re.match(greetings, msg):
-            return "Bonjour ! Comment puis-je t'aider aujourd'hui ?"
+            return "Salut ! Comment tu vas ? Je peux t'aider avec quelque chose ?"
 
         if re.search(r'(qui.*(toi|tu)|présente.*toi|c\'est qui)', msg):
-            return "Je suis un assistant IA. Pose-moi ta question, je te répondrai directement."
+            return "Je suis un assistant IA. Dis-moi ce dont tu as besoin, je suis là pour t'aider !"
 
         if re.search(r'(merci|thanks|thx|merci beaucoup)', msg):
             return "De rien ! N'hésite pas si tu as d'autres questions, je suis là pour t'aider. 😊"
@@ -399,9 +399,8 @@ class AIEngine:
 
     def _handle_general(self, message):
         return (
-            f"Tu as demandé : *\"{message.strip()[:200]}\"*\n\n"
-            f"Pour te répondre au mieux, pourrais-tu préciser ta question ? "
-            f"Donne-moi plus de détails sur ce que tu veux savoir."
+            f"Je vois que tu t'intéresses à : \"{message.strip()[:150]}\". "
+            f"Peux-tu m'en dire un peu plus pour que je puisse t'aider au mieux ?"
         )
 
     def format_response(self, content):
