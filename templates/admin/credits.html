@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="admin-layout">
+    <div class="admin-sidebar">
+        <a href="{{ url_for('admin.dashboard') }}">&#x1F4CA; Tableau de bord</a>
+        <a href="{{ url_for('admin.users') }}">&#x1F464; Utilisateurs</a>
+        <a href="{{ url_for('admin.credits') }}" class="active">&#x1F4B0; Crédits</a>
+        <a href="{{ url_for('admin.chats') }}">&#x1F4AC; Conversations</a>
+        <a href="{{ url_for('admin.settings') }}">&#x2699;&#xFE0F; Paramètres</a>
+    </div>
+    <div class="admin-content">
+        <h1>&#x1F4B0; Gestion des crédits</h1>
+
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:24px;">
+            <h2 style="font-size:1.1rem;margin-bottom:16px;">Ajouter des crédits à un utilisateur</h2>
+            <form method="POST" action="{{ url_for('admin.add_credits') }}" style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
+                <div class="form-group" style="margin-bottom:0;">
+                    <label>Utilisateur</label>
+                    <select name="user_id" class="form-control" required>
+                        <option value="">-- Sélectionner --</option>
+                        {% for u in users %}
+                        <option value="{{ u.id }}">{{ u.username }} ({{ u.credits }} crédits)</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label>Nombre de crédits</label>
+                    <input type="number" name="amount" class="form-control" min="1" value="10" required>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label>Raison</label>
+                    <input type="text" name="reason" class="form-control" value="Ajout manuel" placeholder="Raison">
+                </div>
+                <button type="submit" class="btn btn-primary" style="margin-bottom:0;">&#x2795; Ajouter</button>
+            </form>
+        </div>
+
+        <h2 style="font-size:1.1rem;margin-bottom:16px;">Historique des transactions</h2>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Utilisateur</th>
+                    <th>Montant</th>
+                    <th>Raison</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs.items %}
+                <tr>
+                    <td>{{ log.id }}</td>
+                    <td>{{ log.user.username }}</td>
+                    <td style="color:{% if log.amount > 0 %}var(--success){% else %}var(--danger){% endif %};font-weight:600;">
+                        {% if log.amount > 0 %}+{% endif %}{{ log.amount }}
+                    </td>
+                    <td>{{ log.reason }}</td>
+                    <td>{{ log.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="5" style="text-align:center;color:var(--text-secondary);">Aucune transaction</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if logs.pages > 1 %}
+        <div class="pagination">
+            {% if logs.has_prev %}
+            <a href="{{ url_for('admin.credits', page=logs.prev_num) }}">&laquo;</a>
+            {% endif %}
+            {% for page_num in logs.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                {% if page_num %}
+                    <a href="{{ url_for('admin.credits', page=page_num) }}" {% if page_num == logs.page %}style="background:var(--accent);"{% endif %}>{{ page_num }}</a>
+                {% else %}
+                    <span>...</span>
+                {% endif %}
+            {% endfor %}
+            {% if logs.has_next %}
+            <a href="{{ url_for('admin.credits', page=logs.next_num) }}">&raquo;</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

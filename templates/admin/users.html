@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="admin-layout">
+    <div class="admin-sidebar">
+        <a href="{{ url_for('admin.dashboard') }}">&#x1F4CA; Tableau de bord</a>
+        <a href="{{ url_for('admin.users') }}" class="active">&#x1F464; Utilisateurs</a>
+        <a href="{{ url_for('admin.credits') }}">&#x1F4B0; Crédits</a>
+        <a href="{{ url_for('admin.chats') }}">&#x1F4AC; Conversations</a>
+        <a href="{{ url_for('admin.settings') }}">&#x2699;&#xFE0F; Paramètres</a>
+    </div>
+    <div class="admin-content">
+        <h1>&#x1F464; Utilisateurs</h1>
+
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Rôle</th>
+                    <th>Crédits</th>
+                    <th>Statut</th>
+                    <th>Inscrit le</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users.items %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{% if user.is_admin %}<span class="badge badge-admin">Admin</span>{% else %}Utilisateur{% endif %}</td>
+                    <td>{{ user.credits }}</td>
+                    <td>{% if user.is_active %}<span class="badge badge-active">Actif</span>{% else %}<span class="badge badge-inactive">Inactif</span>{% endif %}</td>
+                    <td>{{ user.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+                    <td>
+                        <a href="{{ url_for('admin.edit_user', user_id=user.id) }}" class="btn btn-sm btn-outline">&#x270F;&#xFE0F;</a>
+                        {% if user.id != current_user.id %}
+                        <form method="POST" action="{{ url_for('admin.delete_user', user_id=user.id) }}" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer cet utilisateur ?')">&#x1F5D1;</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if users.pages > 1 %}
+        <div class="pagination">
+            {% if users.has_prev %}
+            <a href="{{ url_for('admin.users', page=users.prev_num) }}">&laquo;</a>
+            {% endif %}
+            {% for page_num in users.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                {% if page_num %}
+                    <a href="{{ url_for('admin.users', page=page_num) }}" {% if page_num == users.page %}style="background:var(--accent);"{% endif %}>{{ page_num }}</a>
+                {% else %}
+                    <span>...</span>
+                {% endif %}
+            {% endfor %}
+            {% if users.has_next %}
+            <a href="{{ url_for('admin.users', page=users.next_num) }}">&raquo;</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

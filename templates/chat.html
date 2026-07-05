@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="chat-layout">
+    <div class="chat-sidebar">
+        <div class="chat-sidebar-header">
+            <button id="new-chat-btn" class="btn btn-primary">+ Nouvelle conversation</button>
+        </div>
+        <div style="padding:8px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:0.85rem;color:var(--text-secondary);">
+            <span>&#x1F4B0; Crédits : <strong id="credit-display" style="color:var(--accent-light);">{{ current_user.credits }}</strong></span>
+            {% if current_user.is_admin %}<span style="color:var(--accent);">Admin (illimité)</span>{% endif %}
+        </div>
+        <div class="chat-list">
+            {% for chat in chats %}
+            <div class="chat-item {% if request.args.get('chat')|string == chat.id|string %}active{% endif %}"
+                 data-chat-id="{{ chat.id }}"
+                 onclick="loadChat({{ chat.id }})">
+                <span class="chat-item-title">{{ chat.title }}</span>
+                <button class="chat-item-delete" onclick="deleteChat({{ chat.id }}, event)">&#x2716;</button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="chat-main">
+        <div class="chat-messages" id="chat-messages">
+            {% if request.args.get('chat') %}
+            <div style="text-align:center;padding:40px;color:var(--text-secondary)">Chargement...</div>
+            {% else %}
+            <div class="welcome-message" id="welcome-message">
+                <div class="welcome-icon">&#x1F916;</div>
+                <h2>{{ site_settings.get('welcome_message', 'Bonjour ! Je suis ton assistant IA.') }}</h2>
+                <p>Pose toutes tes questions : code, sciences, culture, conseils... Je suis là pour t'aider !</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="chat-input-area">
+            <form id="chat-form" class="chat-input-wrapper">
+                <textarea id="message-input"
+                          placeholder="Pose ta question ici..."
+                          rows="1"
+                          {% if not request.args.get('chat') %}disabled{% endif %}></textarea>
+                <button type="submit" id="send-btn" class="btn btn-primary"
+                        {% if not request.args.get('chat') %}disabled{% endif %}>
+                    &#x27A4;
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const chatId = '{{ request.args.get("chat", "") }}';
+    if (chatId) {
+        loadChat(parseInt(chatId));
+    }
+    updateCredits();
+});
+
+function updateCredits() {
+    fetch('/api/user/credits')
+        .then(r => r.json())
+        .then(data => {
+            const el = document.getElementById('credit-display');
+            if (el) el.textContent = data.credits;
+        });
+}
+</script>
+{% endblock %}

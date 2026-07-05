@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-page">
+    <div class="auth-card">
+        <h1>&#x1F511; Connexion</h1>
+        <p>Connecte-toi pour utiliser l'assistant IA</p>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.email.label }}
+                {{ form.email(class="form-control", placeholder="ton@email.com") }}
+                {% for error in form.email.errors %}<span style="color:var(--danger);font-size:0.85rem;">{{ error }}</span>{% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.password.label }}
+                {{ form.password(class="form-control", placeholder="Mot de passe") }}
+                {% for error in form.password.errors %}<span style="color:var(--danger);font-size:0.85rem;">{{ error }}</span>{% endfor %}
+            </div>
+            <button type="submit" class="btn btn-primary">Se connecter</button>
+        </form>
+        <div class="auth-links">
+            Pas encore de compte ? <a href="{{ url_for('auth.register') }}">S'inscrire</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

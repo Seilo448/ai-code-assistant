@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="admin-layout">
+    <div class="admin-sidebar">
+        <a href="{{ url_for('admin.dashboard') }}" class="active">&#x1F4CA; Tableau de bord</a>
+        <a href="{{ url_for('admin.users') }}">&#x1F464; Utilisateurs</a>
+        <a href="{{ url_for('admin.credits') }}">&#x1F4B0; Crédits</a>
+        <a href="{{ url_for('admin.chats') }}">&#x1F4AC; Conversations</a>
+        <a href="{{ url_for('admin.settings') }}">&#x2699;&#xFE0F; Paramètres</a>
+    </div>
+    <div class="admin-content">
+        <h1>&#x1F4CA; Tableau de bord</h1>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">{{ stats.users_total }}</div>
+                <div class="stat-label">Utilisateurs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ stats.users_active }}</div>
+                <div class="stat-label">Utilisateurs actifs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ stats.chats_total }}</div>
+                <div class="stat-label">Conversations</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ stats.messages_total }}</div>
+                <div class="stat-label">Messages</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ stats.total_credits }}</div>
+                <div class="stat-label">Crédits en circulation</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ stats.credits_used }}</div>
+                <div class="stat-label">Messages envoyés</div>
+            </div>
+        </div>
+
+        <h2>Derniers utilisateurs</h2>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Rôle</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in recent_users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{% if user.is_admin %}<span class="badge badge-admin">Admin</span>{% else %}Utilisateur{% endif %}</td>
+                    <td>{{ user.created_at.strftime('%d/%m/%Y') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

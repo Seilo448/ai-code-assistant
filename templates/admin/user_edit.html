@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="admin-layout">
+    <div class="admin-sidebar">
+        <a href="{{ url_for('admin.dashboard') }}">&#x1F4CA; Tableau de bord</a>
+        <a href="{{ url_for('admin.users') }}" class="active">&#x1F464; Utilisateurs</a>
+        <a href="{{ url_for('admin.credits') }}">&#x1F4B0; Crédits</a>
+        <a href="{{ url_for('admin.chats') }}">&#x1F4AC; Conversations</a>
+        <a href="{{ url_for('admin.settings') }}">&#x2699;&#xFE0F; Paramètres</a>
+    </div>
+    <div class="admin-content">
+        <h1>&#x270F;&#xFE0F; Modifier l'utilisateur : {{ user.username }}</h1>
+
+        <form method="POST" style="max-width:500px;">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.username.label }}
+                {{ form.username(class="form-control") }}
+                {% for error in form.username.errors %}<span style="color:var(--danger);font-size:0.85rem;">{{ error }}</span>{% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.email.label }}
+                {{ form.email(class="form-control") }}
+                {% for error in form.email.errors %}<span style="color:var(--danger);font-size:0.85rem;">{{ error }}</span>{% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.password.label }}
+                {{ form.password(class="form-control", placeholder="Laisser vide pour garder l'actuel") }}
+            </div>
+            <div class="form-group">
+                <label>
+                    {{ form.is_admin() }} {{ form.is_admin.label.text }}
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    {{ form.is_active() }} {{ form.is_active.label.text }}
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <a href="{{ url_for('admin.users') }}" class="btn btn-outline">Annuler</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

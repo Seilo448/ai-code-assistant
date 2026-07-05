@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="admin-layout">
+    <div class="admin-sidebar">
+        <a href="{{ url_for('admin.dashboard') }}">&#x1F4CA; Tableau de bord</a>
+        <a href="{{ url_for('admin.users') }}">&#x1F464; Utilisateurs</a>
+        <a href="{{ url_for('admin.credits') }}">&#x1F4B0; Crédits</a>
+        <a href="{{ url_for('admin.chats') }}">&#x1F4AC; Conversations</a>
+        <a href="{{ url_for('admin.settings') }}" class="active">&#x2699;&#xFE0F; Paramètres</a>
+    </div>
+    <div class="admin-content">
+        <h1>&#x2699;&#xFE0F; Paramètres</h1>
+
+        <form method="POST" style="max-width:600px;">
+            {{ form.hidden_tag() }}
+
+            <h2 style="font-size:1.2rem;margin-bottom:16px;margin-top:24px;">Général</h2>
+            <div class="form-group">
+                {{ form.site_name.label }}
+                {{ form.site_name(class="form-control") }}
+            </div>
+            <div class="form-group">
+                {{ form.site_description.label }}
+                {{ form.site_description(class="form-control") }}
+            </div>
+
+            <h2 style="font-size:1.2rem;margin-bottom:16px;margin-top:24px;">Fournisseur IA</h2>
+            <div class="form-group">
+                {{ form.ai_provider.label }}
+                {{ form.ai_provider(class="form-control") }}
+                <span style="font-size:0.8rem;color:var(--text-secondary);">
+                    Le mode hors-ligne fonctionne sans clé API, les autres modes nécessitent une clé
+                </span>
+            </div>
+
+            <div id="openai-settings" style="display:none;">
+                <h2 style="font-size:1.2rem;margin-bottom:16px;margin-top:24px;">OpenAI</h2>
+                <div class="form-group">
+                    {{ form.openai_api_key.label }}
+                    {{ form.openai_api_key(class="form-control", placeholder="sk-...") }}
+                </div>
+                <div class="form-group">
+                    {{ form.openai_model.label }}
+                    {{ form.openai_model(class="form-control") }}
+                </div>
+            </div>
+
+            <div id="gemini-settings" style="display:none;">
+                <h2 style="font-size:1.2rem;margin-bottom:16px;margin-top:24px;">Google Gemini</h2>
+                <div class="form-group">
+                    {{ form.gemini_api_key.label }}
+                    {{ form.gemini_api_key(class="form-control", placeholder="Ta clé API Gemini (gratuite sur ai.google.dev)") }}
+                    <span style="font-size:0.8rem;color:var(--text-secondary);">
+                        Obtiens ta clé gratuite sur <a href="https://ai.google.dev/" target="_blank">ai.google.dev</a>
+                    </span>
+                </div>
+                <div class="form-group">
+                    {{ form.gemini_model.label }}
+                    {{ form.gemini_model(class="form-control") }}
+                </div>
+            </div>
+
+            <h2 style="font-size:1.2rem;margin-bottom:16px;margin-top:24px;">Messages</h2>
+            <div class="form-group">
+                {{ form.welcome_message.label }}
+                {{ form.welcome_message(class="form-control", rows=3) }}
+            </div>
+            <div class="form-group">
+                {{ form.system_prompt.label }}
+                {{ form.system_prompt(class="form-control", rows=5, placeholder="Prompt système pour l'IA...") }}
+                <span style="font-size:0.8rem;color:var(--text-secondary);">Ce prompt définit le comportement de l'IA</span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Enregistrer les paramètres</button>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const provider = document.getElementById('ai_provider');
+    const openaiDiv = document.getElementById('openai-settings');
+    const geminiDiv = document.getElementById('gemini-settings');
+
+    function toggleSettings() {
+        openaiDiv.style.display = provider.value === 'openai' ? 'block' : 'none';
+        geminiDiv.style.display = provider.value === 'gemini' ? 'block' : 'none';
+    }
+
+    provider.addEventListener('change', toggleSettings);
+    toggleSettings();
+});
+</script>
+{% endblock %}

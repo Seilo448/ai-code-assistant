@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="admin-layout">
+    <div class="admin-sidebar">
+        <a href="{{ url_for('admin.dashboard') }}">&#x1F4CA; Tableau de bord</a>
+        <a href="{{ url_for('admin.users') }}">&#x1F464; Utilisateurs</a>
+        <a href="{{ url_for('admin.credits') }}">&#x1F4B0; Crédits</a>
+        <a href="{{ url_for('admin.chats') }}" class="active">&#x1F4AC; Conversations</a>
+        <a href="{{ url_for('admin.settings') }}">&#x2699;&#xFE0F; Paramètres</a>
+    </div>
+    <div class="admin-content">
+        <h1>&#x1F4AC; {{ chat.title }}</h1>
+        <p style="color:var(--text-secondary);margin-bottom:20px;">
+            Utilisateur : {{ chat.author.username }} | 
+            Créé le : {{ chat.created_at.strftime('%d/%m/%Y %H:%M') }}
+        </p>
+
+        <div style="max-width:800px;">
+            {% for msg in messages %}
+            <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;">
+                <div style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:8px;">
+                    {% if msg.role == 'user' %}&#x1F464; Utilisateur{% else %}&#x1F916; Assistant IA{% endif %}
+                    &middot; {{ msg.created_at.strftime('%H:%M') }}
+                </div>
+                <div style="line-height:1.6;font-size:0.95rem;white-space:pre-wrap;">{{ msg.content }}</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <a href="{{ url_for('admin.chats') }}" class="btn btn-outline" style="margin-top:16px;">&larr; Retour</a>
+    </div>
+</div>
+{% endblock %}
