@@ -17,6 +17,12 @@ def create_app():
     login_manager.login_message = 'Veuillez te connecter pour accéder à cette page.'
     login_manager.init_app(app)
 
+    @login_manager.unauthorized_handler
+    def unauthorized():
+        if request.is_json:
+            return jsonify({'error': 'Session expirée. Reconnecte-toi.'}), 401
+        return redirect(url_for('auth.login'))
+
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))

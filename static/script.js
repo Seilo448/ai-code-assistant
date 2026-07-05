@@ -35,10 +35,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function createNewChat() {
     fetch('/api/chat/new', { method: 'POST' })
-        .then(r => r.json())
+        .then(r => { if (!r.ok) throw new Error('Erreur serveur'); return r.json(); })
         .then(data => {
             currentChatId = data.id;
             window.location.href = `/chat?chat=${data.id}`;
+        })
+        .catch(err => {
+            alert('Impossible de créer une conversation. Reconnecte-toi si le problème persiste.');
         });
 }
 
@@ -108,12 +111,12 @@ function sendMessage(message) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: message })
     })
-    .then(r => r.json())
+    .then(r => { if (!r.ok) { return r.json().then(d => { throw new Error(d.error || 'Erreur serveur'); }); } return r.json(); })
     .then(data => {
         document.getElementById('typing-indicator')?.remove();
         if (data.error) {
             addMessageToUI('assistant', `Erreur : ${escapeHtml(data.error)}`);
-            if (data.error.includes('Credits')) {
+            if (data.error.includes('Credits') || data.error.includes('crédit')) {
                 addMessageToUI('assistant', 'Contacte l\'administrateur pour obtenir plus de credits.');
             }
         } else {
@@ -141,7 +144,7 @@ function sendMessage(message) {
     })
     .catch(err => {
         document.getElementById('typing-indicator')?.remove();
-        addMessageToUI('assistant', `Erreur de connexion : ${escapeHtml(err.message)}`);
+        addMessageToUI('assistant', `Erreur : ${escapeHtml(err.message)}`);
     })
     .finally(() => {
         isSending = false;
