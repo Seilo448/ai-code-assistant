@@ -61,20 +61,21 @@ class AIEngine:
         return (title[:80] + '...') if len(title) > 80 else title
 
     def _call_openai(self, chat_id, user_message):
-        import openai
+        from openai import OpenAI
         key = self.get_setting('openai_api_key', '')
         if not key:
             return None
-        openai.api_key = key
-        model = self.get_setting('openai_model', 'gpt-3.5-turbo')
+        client = OpenAI(api_key=key)
+        model = self.get_setting('openai_model', 'gpt-4o-mini')
         context = self.build_context(chat_id)
         try:
-            resp = openai.ChatCompletion.create(
+            resp = client.chat.completions.create(
                 model=model, messages=context,
                 temperature=0.7, max_tokens=4096
             )
             return resp.choices[0].message.content
-        except Exception:
+        except Exception as e:
+            print(f"OpenAI error: {e}")
             return None
 
     def _call_gemini(self, chat_id, user_message):

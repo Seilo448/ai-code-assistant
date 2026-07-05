@@ -44,8 +44,9 @@ class AdminSettingsForm(FlaskForm):
     ])
     openai_api_key = StringField('Clé API OpenAI')
     openai_model = SelectField('Modèle OpenAI', choices=[
+        ('gpt-4o-mini', 'GPT-4o Mini (rapide, pas cher)'),
+        ('gpt-4o', 'GPT-4o (puissant)'),
         ('gpt-3.5-turbo', 'GPT-3.5 Turbo'),
-        ('gpt-4', 'GPT-4'),
         ('gpt-4-turbo', 'GPT-4 Turbo'),
     ])
     gemini_api_key = StringField('Clé API Google Gemini')
