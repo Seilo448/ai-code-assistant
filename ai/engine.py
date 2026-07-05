@@ -61,19 +61,30 @@ class AIEngine:
         return (title[:80] + '...') if len(title) > 80 else title
 
     def _call_openai(self, chat_id, user_message):
+        key = self.get_setting('openai_api_key', '')
+        if not key:
+            return None
+        model = self.get_setting('openai_model', 'gpt-4o-mini')
+        context = self.build_context(chat_id)
+        url = "https://api.openai.com/v1/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {key}",
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "model": model,
+            "messages": context,
+            "temperature": 0.7,
+            "max_tokens": 4096
+        }
         try:
-            from openai import OpenAI
-            key = self.get_setting('openai_api_key', '')
-            if not key:
-                return None
-            client = OpenAI(api_key=key)
-            model = self.get_setting('openai_model', 'gpt-4o-mini')
-            context = self.build_context(chat_id)
-            resp = client.chat.completions.create(
-                model=model, messages=context,
-                temperature=0.7, max_tokens=4096
-            )
-            return resp.choices[0].message.content
+            data = json.dumps(payload).encode()
+            req = urllib.request.Request(url, data=data, headers=headers)
+            resp = urllib.request.urlopen(req, timeout=60)
+            result = json.loads(resp.read())
+            choices = result.get("choices", [])
+            if choices:
+                return choices[0].get("message", {}).get("content", "")
         except Exception as e:
             print(f"OpenAI error: {e}")
             return None
