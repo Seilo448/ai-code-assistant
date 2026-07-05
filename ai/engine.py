@@ -164,6 +164,24 @@ class AIEngine:
             return self._handle_health(msg)
         elif re.search(r'(conseil|astuce|comment|pourquoi|meilleur|solution)', msg):
             return self._handle_advice(msg)
+        elif re.search(r'(jeu|jeux|jouer|gaming|video|console)', msg):
+            return self._handle_gaming(msg)
+        elif re.search(r'(musique|music|chanson|chant|instrument|guitare|piano)', msg):
+            return self._handle_music(msg)
+        elif re.search(r'(voyage|voyager|visiter|pays|ville|tourisme)', msg):
+            return self._handle_travel(msg)
+        elif re.search(r'(nourriture|cuisine|recette|manger|plat|ingrédient)', msg):
+            return self._handle_food(msg)
+        elif re.search(r'(sport|entraînement|fitness|musculation|courir|velo)', msg):
+            return self._handle_sport(msg)
+        elif re.search(r'(économie|finance|argent|investir|bourse|crypto|budget)', msg):
+            return self._handle_finance(msg)
+        elif re.search(r'(philosophie|philo|sens|vie|existence|réflexion)', msg):
+            return self._handle_philosophy(msg)
+        elif re.search(r'(ia|intelligence artificielle|machine learning|deep learning|ai)', msg):
+            return self._handle_ai(msg)
+        elif re.search(r'(réseau|reseau|wifi|internet|tcp|ip|protocol|sécurité)', msg):
+            return self._handle_networking(msg)
 
         return self._handle_general(message)
 
@@ -397,10 +415,135 @@ class AIEngine:
             "- **Carrière** : orientation, entretiens, développement pro\n\n"
             "De quel sujet veux-tu des conseils ?")
 
+    def _handle_gaming(self, msg):
+        if 'minecraft' in msg:
+            return ("**Minecraft**\n\n"
+                "Un jeu de construction et survie en monde ouvert.\n"
+                "- **Survie** : récolte des ressources, construis un abri, affronte les monstres\n"
+                "- **Créatif** : construis librement avec tous les blocs\n"
+                "- **Astuce** : toujours avoir un lit pour passer la nuit !")
+        if 'fortnite' in msg:
+            return ("**Fortnite**\n\n"
+                "Battle Royale avec construction et événements live.\n"
+                "Construis des murs et rampes pour te protéger et gagner en hauteur.")
+        if 'zelda' in msg:
+            return ("**The Legend of Zelda**\n\n"
+                "Une saga d'aventure et d'exploration. Le dernier opus **Tears of the Kingdom** "
+                "reprend la map de Breath of the Wild avec de nouvelles capacités.")
+        return ("**Jeux vidéo**\n\n"
+            "Je peux parler de : Minecraft, Fortnite, Zelda, Elden Ring, GTA, FIFA, Call of Duty... "
+            "Quel jeu t'intéresse ?")
+
+    def _handle_music(self, msg):
+        if 'guitare' in msg:
+            return ("**Guitare - Bases**\n\n"
+                "- **Accords ouverts** : Do (C), Ré (D), Mi (E), Sol (G), La (A)\n"
+                "- **Gammes** : pentatonique mineure pour le blues/rock\n"
+                "- **Conseil** : apprends d'abord les accords de base, puis le rythme")
+        if 'piano' in msg:
+            return ("**Piano - Bases**\n\n"
+                "- **Doigté** : 1=pouce, 2=index, 3=majeur, 4=annulaire, 5=auriculaire\n"
+                "- **Gamme de Do majeur** : Do Ré Mi Fa Sol La Si Do\n"
+                "- **Conseil** : pratique les gammes 10 min/jour")
+        return ("**Musique**\n\n"
+            "Je peux t'aider avec : instruments (guitare, piano), solfège, composition, "
+            "ou te parler de mes connaissances musicales !")
+
+    def _handle_travel(self, msg):
+        if 'japon' in msg:
+            return ("**Voyage au Japon**\n\n"
+                "- **Tokyo** : Shibuya, Akihabara, temples\n"
+                "- **Kyoto** : temples historiques, geishas, bambouseraie\n"
+                "- **Osaka** : street food, château, aquarium\n"
+                "- **Conseil** : le Japan Rail Pass est économique pour voyager")
+        if 'france' in msg or 'paris' in msg:
+            return ("**Voyage en France**\n\n"
+                "- **Paris** : Tour Eiffel, Louvre, Montmartre\n"
+                "- **Sud** : Nice, Marseille, Calanques\n"
+                "- **Montagne** : Alpes, Chamonix, ski\n"
+                "- **Conseil** : le TGV relie Paris à Lyon en 2h")
+        return ("**Voyage**\n\n"
+            "Je peux te parler de destinations : Japon, France, Italie, USA, Thaïlande... "
+            "Quel pays ou ville veux-tu explorer ?")
+
+    def _handle_food(self, msg):
+        if 'italien' in msg or 'pizza' in msg or 'pasta' in msg:
+            return ("**Cuisine italienne**\n\n"
+                "- **Pizza Margherita** : tomate, mozzarella, basilic\n"
+                "- **Pasta carbonara** : œufs, pecorino, guanciale (pas de crème !)\n"
+                "- **Tiramisu** : café, mascarpone, cacao")
+        if 'indien' in msg or 'curry' in msg:
+            return ("**Cuisine indienne**\n\n"
+                "- **Curry** : base d'oignons, gingembre, épices\n"
+                "- **Naan** : pain traditionnel cuit au four tandoor\n"
+                "- **Biryani** : riz parfumé aux épices et viande")
+        return ("**Cuisine**\n\n"
+            "Je peux te parler de : cuisine italienne, indienne, japonaise, française, "
+            "ou te donner des recettes et conseils culinaires !")
+
+    def _handle_sport(self, msg):
+        return ("**Sport et fitness**\n\n"
+            "Quel sport t'intéresse ?\n"
+            "- **Musculation** : exercices de base (squat, développé, soulevé de terre)\n"
+            "- **Course à pied** : plan d'entraînement, endurance, fractionné\n"
+            "- **Football** : conseils, tactiques, exercices\n"
+            "- **Yoga** : postures, respiration, relaxation")
+
+    def _handle_finance(self, msg):
+        return ("**Économie et finances**\n\n"
+            "Je peux t'aider avec :\n"
+            "- **Budget personnel** : gestion, épargne, économies\n"
+            "- **Investissement** : bourse, immobilier, cryptomonnaies\n"
+            "- **Concepts économiques** : inflation, PIB, offre/demande\n\n"
+            "⚠️ Je donne des informations générales, pas des conseils financiers personnalisés.")
+
+    def _handle_philosophy(self, msg):
+        return ("**Philosophie**\n\n"
+            "Quel sujet philosophique t'intéresse ?\n"
+            "- **Existentialisme** : Sartre, Camus, liberté et responsabilité\n"
+            "- **Stoïcisme** : Marc Aurèle, Sénèque, contrôle des émotions\n"
+            "- **Éthique** : bien/mal, morale, utilitarisme\n"
+            "- **Métaphysique** : réalité, conscience, libre arbitre")
+
+    def _handle_ai(self, msg):
+        return ("**Intelligence Artificielle**\n\n"
+            "- **LLM** : modèles de langage comme GPT, Gemini, Claude\n"
+            "- **Machine Learning** : algorithmes qui apprennent à partir de données\n"
+            "- **Deep Learning** : réseaux de neurones profonds\n"
+            "- **Applications** : chatbots, vision, traduction, génération d'images\n\n"
+            "Moi-même je suis un assistant IA ! Pose-moi des questions sur ce sujet.")
+
+    def _handle_networking(self, msg):
+        return ("**Réseaux et sécurité**\n\n"
+            "- **Modèle OSI** : 7 couches (physique → application)\n"
+            "- **TCP/IP** : protocoles fondamentaux d'Internet\n"
+            "- **Sécurité** : chiffrement, VPN, firewall, mots de passe\n"
+            "- **WiFi** : normes (ac, ax/6e), sécurité WPA3, ports\n\n"
+            "Des questions sur un sujet précis ?")
+
     def _handle_general(self, message):
+        msg = message.lower().strip()
+        words = msg.split()[:10]
+
+        if re.search(r'(quoi|comment|pourquoi|quand|où|qui|quel|quelle)', msg):
+            sujet = re.sub(r'^(dis|dit|parle|explique|raconte)\s*(-\s*)?(moi\s+)?', '', msg)
+            sujet = sujet.strip().rstrip('?!.')
+            if len(sujet) < 3 or len(sujet) == len(re.sub(r'[^\w\s]', '', sujet)):
+                sujet = msg.strip()[:100]
+            return (
+                f"Bonne question ! Pour répondre précisément, j'aurais besoin d'un peu plus de contexte sur \"{sujet[:80]}\". "
+                f"Dis-moi ce qui t'intéresse exactement et je te donnerai une réponse détaillée !"
+            )
+
+        if re.match(r'(dis|parle|raconte|explique)', msg):
+            return (
+                "D'accord ! Je peux parler de nombreux sujets : programmation, sciences, "
+                "histoire, culture, technologie... De quoi veux-tu que je te parle ?"
+            )
+
         return (
-            f"Je vois que tu t'intéresses à : \"{message.strip()[:150]}\". "
-            f"Peux-tu m'en dire un peu plus pour que je puisse t'aider au mieux ?"
+            f"Intéressant ! \"{message.strip()[:100]}\" est un sujet dont on peut discuter. "
+            f"Pour que je puisse t'aider au mieux, peux-tu être plus précis sur ce que tu veux savoir ?"
         )
 
     def format_response(self, content):
