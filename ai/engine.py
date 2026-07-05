@@ -120,27 +120,10 @@ class AIEngine:
 
         greetings = r'^(bonjour|salut|hey|coucou|hello|hi|yo|bjr|slt)'
         if re.match(greetings, msg):
-            return (
-                "Bonjour ! Je suis ton assistant IA. Je peux répondre à **tous** types de questions :\n\n"
-                "- **Programmation** : Python, JS, HTML/CSS, SQL, Git...\n"
-                "- **Sciences** : maths, physique, biologie...\n"
-                "- **Culture** : histoire, géographie, langues...\n"
-                "- **Conseils** : rédaction, organisation, productivité...\n"
-                "- **Actualités** et culture générale\n\n"
-                "Que veux-tu savoir ?"
-            )
+            return "Bonjour ! Comment puis-je t'aider aujourd'hui ?"
 
         if re.search(r'(qui.*(toi|tu)|présente.*toi|c\'est qui)', msg):
-            return (
-                "**Qui suis-je ?**\n\n"
-                "Je suis un assistant IA généraliste capable de répondre à toutes sortes de questions :\n\n"
-                "- **Code** : aide en programmation, exemples, débogage\n"
-                "- **Connaissances générales** : explications sur divers sujets\n"
-                "- **Rédaction** : aide à l'écriture, correction\n"
-                "- **Calculs** : mathématiques, conversions\n"
-                "- **Conseils** : recommandations, méthodologie\n\n"
-                "N'hésite pas à me poser n'importe quelle question !"
-            )
+            return "Je suis un assistant IA. Pose-moi ta question, je te répondrai directement."
 
         if re.search(r'(merci|thanks|thx|merci beaucoup)', msg):
             return "De rien ! N'hésite pas si tu as d'autres questions, je suis là pour t'aider. 😊"
@@ -416,18 +399,9 @@ class AIEngine:
 
     def _handle_general(self, message):
         return (
-            "**Assistant IA Généraliste**\n\n"
-            f"J'ai bien reçu ta question. Je peux répondre sur **tous les sujets** :\n\n"
-            f"**Programmation** : Python, JavaScript, HTML/CSS, SQL, Git...\n"
-            f"**Sciences** : maths, physique, chimie, biologie...\n"
-            f"**Culture** : histoire, géographie, langues, littérature...\n"
-            f"**Conseils** : rédaction, productivité, apprentissage...\n\n"
-            f"**Exemples de questions :**\n"
-            f"- *\"Explique la photosynthèse\"*\n"
-            f"- *\"Comment faire une API Flask ?\"*\n"
-            f"- *\"Résous cette équation : 2x + 5 = 13\"*\n"
-            f"- *\"Corrige mon texte : ...\"*\n"
-            f"- *\"Conseils pour apprendre une langue\"*"
+            f"Tu as demandé : *\"{message.strip()[:200]}\"*\n\n"
+            f"Pour te répondre au mieux, pourrais-tu préciser ta question ? "
+            f"Donne-moi plus de détails sur ce que tu veux savoir."
         )
 
     def format_response(self, content):
