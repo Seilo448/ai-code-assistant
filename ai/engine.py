@@ -523,27 +523,34 @@ class AIEngine:
 
     def _handle_general(self, message):
         msg = message.lower().strip()
-        words = msg.split()[:10]
+
+        if len(msg) < 3:
+            return "Je t'écoute ! Pose-moi une question, je suis là pour t'aider."
+
+        sujet = msg[:100].strip().rstrip('?!.')
 
         if re.search(r'(quoi|comment|pourquoi|quand|où|qui|quel|quelle)', msg):
-            sujet = re.sub(r'^(dis|dit|parle|explique|raconte)\s*(-\s*)?(moi\s+)?', '', msg)
-            sujet = sujet.strip().rstrip('?!.')
-            if len(sujet) < 3 or len(sujet) == len(re.sub(r'[^\w\s]', '', sujet)):
-                sujet = msg.strip()[:100]
             return (
-                f"Bonne question ! Pour répondre précisément, j'aurais besoin d'un peu plus de contexte sur \"{sujet[:80]}\". "
-                f"Dis-moi ce qui t'intéresse exactement et je te donnerai une réponse détaillée !"
+                f"Pour répondre à ta question sur \"{sujet}\", j'ai besoin d'un peu plus de contexte. "
+                f"Explique-moi ce que tu veux savoir exactement et je te donnerai une réponse complète !"
             )
 
         if re.match(r'(dis|parle|raconte|explique)', msg):
             return (
-                "D'accord ! Je peux parler de nombreux sujets : programmation, sciences, "
-                "histoire, culture, technologie... De quoi veux-tu que je te parle ?"
+                "Je peux te parler de programmation, sciences, histoire, culture, technologie... "
+                "De quoi veux-tu discuter ?"
+            )
+
+        if len(msg.split()) <= 3:
+            return (
+                f"Parle-moi de \"{sujet}\" ! Dis-m'en un peu plus pour que je puisse t'aider "
+                f"ou te donner des informations précises."
             )
 
         return (
-            f"Intéressant ! \"{message.strip()[:100]}\" est un sujet dont on peut discuter. "
-            f"Pour que je puisse t'aider au mieux, peux-tu être plus précis sur ce que tu veux savoir ?"
+            f"Tu mentionnes \"{sujet}\". "
+            f"C'est un sujet intéressant ! Pour que je puisse t'aider au mieux, "
+            f"dis-moi ce que tu veux savoir précisément."
         )
 
     def format_response(self, content):
