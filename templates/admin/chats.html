@@ -2,14 +2,14 @@
 {% block content %}
 <div class="admin-layout">
     <div class="admin-sidebar">
-        <a href="{{ url_for('admin.dashboard') }}">&#x1F4CA; Tableau de bord</a>
-        <a href="{{ url_for('admin.users') }}">&#x1F464; Utilisateurs</a>
-        <a href="{{ url_for('admin.credits') }}">&#x1F4B0; Crédits</a>
-        <a href="{{ url_for('admin.chats') }}" class="active">&#x1F4AC; Conversations</a>
-        <a href="{{ url_for('admin.settings') }}">&#x2699;&#xFE0F; Paramètres</a>
+        <a href="{{ url_for('admin.dashboard') }}">Tableau de bord</a>
+        <a href="{{ url_for('admin.users') }}">Utilisateurs</a>
+        <a href="{{ url_for('admin.credits') }}">Credits</a>
+        <a href="{{ url_for('admin.chats') }}" class="active">Conversations</a>
+        <a href="{{ url_for('admin.settings') }}">Parametres</a>
     </div>
     <div class="admin-content">
-        <h1>&#x1F4AC; Conversations</h1>
+        <h1>Conversations</h1>
 
         <table class="admin-table">
             <thead>
@@ -18,7 +18,7 @@
                     <th>Titre</th>
                     <th>Utilisateur</th>
                     <th>Messages</th>
-                    <th>Créé le</th>
+                    <th>Cree le</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -31,9 +31,9 @@
                     <td>{{ chat.messages.count() }}</td>
                     <td>{{ chat.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
                     <td>
-                        <a href="{{ url_for('admin.view_chat', chat_id=chat.id) }}" class="btn btn-sm btn-outline">&#x1F441;&#xFE0F;</a>
+                        <a href="{{ url_for('admin.view_chat', chat_id=chat.id) }}" class="btn btn-sm btn-outline">Voir</a>
                         <form method="POST" action="{{ url_for('admin.delete_chat', chat_id=chat.id) }}" style="display:inline;">
-                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer cette conversation ?')">&#x1F5D1;</button>
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer cette conversation ?')">Supprimer</button>
                         </form>
                     </td>
                 </tr>
@@ -48,7 +48,7 @@
             {% endif %}
             {% for page_num in chats.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
                 {% if page_num %}
-                    <a href="{{ url_for('admin.chats', page=page_num) }}" {% if page_num == chats.page %}style="background:var(--accent);"{% endif %}>{{ page_num }}</a>
+                    <a href="{{ url_for('admin.chats', page=page_num) }}" {% if page_num == chats.page %}class="active"{% endif %}>{{ page_num }}</a>
                 {% else %}
                     <span>...</span>
                 {% endif %}

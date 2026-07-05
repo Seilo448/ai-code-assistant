@@ -2,11 +2,12 @@
 {% block content %}
 <div class="home-page">
     <div class="hero">
-        <h1>&#x1F916; {{ site_settings.get('site_name', 'AI Code Assistant') }}</h1>
-        <p>{{ site_settings.get('site_description', 'Ton assistant IA de codage. Pose des questions, obtiens des réponses, apprends à coder.') }}</p>
+        <div class="hero-icon">AI</div>
+        <h1>{{ site_settings.get('site_name', 'AI Code Assistant') }}</h1>
+        <p>{{ site_settings.get('site_description', 'Ton assistant IA de codage. Pose des questions, obtiens des reponses, apprends a coder.') }}</p>
         <div class="cta-buttons">
-            <a href="{{ url_for('auth.register') }}" class="btn btn-primary">&#x1F680; Commencer</a>
-            <a href="{{ url_for('auth.login') }}" class="btn btn-outline">&#x1F511; Se connecter</a>
+            <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Commencer</a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-outline">Se connecter</a>
         </div>
     </div>
 </div>

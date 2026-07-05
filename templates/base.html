@@ -4,21 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ site_settings.get('site_name', 'AI Code Assistant') }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <nav class="navbar">
         <a href="{{ url_for('index') }}" class="navbar-brand">
-            <div class="brand-icon">{ }</div>
+            <span class="brand-icon">AI</span>
             {{ site_settings.get('site_name', 'AI Code Assistant') }}
         </a>
         <div class="navbar-menu">
             {% if current_user.is_authenticated %}
                 {% if current_user.is_admin %}
-                    <a href="{{ url_for('admin.dashboard') }}">&#x1F6E0;&#xFE0F; Administration</a>
+                    <a href="{{ url_for('admin.dashboard') }}">Administration</a>
                 {% endif %}
-                <span style="color:var(--text-secondary);font-size:0.9rem;">{{ current_user.username }}</span>
-                <a href="{{ url_for('auth.logout') }}" class="btn btn-outline btn-sm">Déconnexion</a>
+                    <a href="{{ url_for('chat_page') }}">Chat</a>
+                <span>{{ current_user.username }}</span>
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-outline btn-sm">Deconnexion</a>
             {% else %}
                 <a href="{{ url_for('auth.login') }}" class="btn btn-outline btn-sm">Connexion</a>
                 <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-sm">Inscription</a>

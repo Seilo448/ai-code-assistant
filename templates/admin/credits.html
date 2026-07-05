@@ -2,40 +2,40 @@
 {% block content %}
 <div class="admin-layout">
     <div class="admin-sidebar">
-        <a href="{{ url_for('admin.dashboard') }}">&#x1F4CA; Tableau de bord</a>
-        <a href="{{ url_for('admin.users') }}">&#x1F464; Utilisateurs</a>
-        <a href="{{ url_for('admin.credits') }}" class="active">&#x1F4B0; Crédits</a>
-        <a href="{{ url_for('admin.chats') }}">&#x1F4AC; Conversations</a>
-        <a href="{{ url_for('admin.settings') }}">&#x2699;&#xFE0F; Paramètres</a>
+        <a href="{{ url_for('admin.dashboard') }}">Tableau de bord</a>
+        <a href="{{ url_for('admin.users') }}">Utilisateurs</a>
+        <a href="{{ url_for('admin.credits') }}" class="active">Credits</a>
+        <a href="{{ url_for('admin.chats') }}">Conversations</a>
+        <a href="{{ url_for('admin.settings') }}">Parametres</a>
     </div>
     <div class="admin-content">
-        <h1>&#x1F4B0; Gestion des crédits</h1>
+        <h1>Gestion des credits</h1>
 
-        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:24px;">
-            <h2 style="font-size:1.1rem;margin-bottom:16px;">Ajouter des crédits à un utilisateur</h2>
-            <form method="POST" action="{{ url_for('admin.add_credits') }}" style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
-                <div class="form-group" style="margin-bottom:0;">
+        <div class="credit-form-card">
+            <h2>Ajouter des credits a un utilisateur</h2>
+            <form method="POST" action="{{ url_for('admin.add_credits') }}" class="credit-form">
+                <div class="form-group">
                     <label>Utilisateur</label>
                     <select name="user_id" class="form-control" required>
-                        <option value="">-- Sélectionner --</option>
+                        <option value="">-- Selectionner --</option>
                         {% for u in users %}
-                        <option value="{{ u.id }}">{{ u.username }} ({{ u.credits }} crédits)</option>
+                        <option value="{{ u.id }}">{{ u.username }} ({{ u.credits }} credits)</option>
                         {% endfor %}
                     </select>
                 </div>
-                <div class="form-group" style="margin-bottom:0;">
-                    <label>Nombre de crédits</label>
+                <div class="form-group">
+                    <label>Nombre de credits</label>
                     <input type="number" name="amount" class="form-control" min="1" value="10" required>
                 </div>
-                <div class="form-group" style="margin-bottom:0;">
+                <div class="form-group">
                     <label>Raison</label>
                     <input type="text" name="reason" class="form-control" value="Ajout manuel" placeholder="Raison">
                 </div>
-                <button type="submit" class="btn btn-primary" style="margin-bottom:0;">&#x2795; Ajouter</button>
+                <button type="submit" class="btn btn-primary">Ajouter</button>
             </form>
         </div>
 
-        <h2 style="font-size:1.1rem;margin-bottom:16px;">Historique des transactions</h2>
+        <h2>Historique des transactions</h2>
         <table class="admin-table">
             <thead>
                 <tr>
@@ -51,14 +51,14 @@
                 <tr>
                     <td>{{ log.id }}</td>
                     <td>{{ log.user.username }}</td>
-                    <td style="color:{% if log.amount > 0 %}var(--success){% else %}var(--danger){% endif %};font-weight:600;">
+                    <td class="amount {% if log.amount > 0 %}positive{% else %}negative{% endif %}">
                         {% if log.amount > 0 %}+{% endif %}{{ log.amount }}
                     </td>
                     <td>{{ log.reason }}</td>
                     <td>{{ log.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
                 </tr>
                 {% else %}
-                <tr><td colspan="5" style="text-align:center;color:var(--text-secondary);">Aucune transaction</td></tr>
+                <tr><td colspan="5" class="empty">Aucune transaction</td></tr>
                 {% endfor %}
             </tbody>
         </table>
@@ -70,7 +70,7 @@
             {% endif %}
             {% for page_num in logs.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
                 {% if page_num %}
-                    <a href="{{ url_for('admin.credits', page=page_num) }}" {% if page_num == logs.page %}style="background:var(--accent);"{% endif %}>{{ page_num }}</a>
+                    <a href="{{ url_for('admin.credits', page=page_num) }}" {% if page_num == logs.page %}class="active"{% endif %}>{{ page_num }}</a>
                 {% else %}
                     <span>...</span>
                 {% endif %}

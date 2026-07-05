@@ -50,7 +50,7 @@ function loadChat(chatId) {
     if (welcomeMsg) welcomeMsg.style.display = 'none';
 
     if (messagesContainer) {
-        messagesContainer.innerHTML = '<div class="loading" style="text-align:center;padding:40px;color:var(--text-secondary)">Chargement...</div>';
+        messagesContainer.innerHTML = '<div class="loading">Chargement...</div>';
     }
 
     fetch(`/api/chat/${chatId}/messages`)
@@ -61,7 +61,7 @@ function loadChat(chatId) {
                 if (messages.length === 0) {
                     messagesContainer.innerHTML = `
                         <div class="welcome-message">
-                            <div class="welcome-icon">&#x1F916;</div>
+                            <div class="welcome-icon">AI</div>
                             <h2>Nouvelle conversation</h2>
                             <p>Pose une question sur le code, un langage ou un framework !</p>
                         </div>`;
@@ -113,8 +113,8 @@ function sendMessage(message) {
         document.getElementById('typing-indicator')?.remove();
         if (data.error) {
             addMessageToUI('assistant', `Erreur : ${escapeHtml(data.error)}`);
-            if (data.error.includes('Crédits')) {
-                addMessageToUI('assistant', 'Contacte l\'administrateur pour obtenir plus de crédits.');
+            if (data.error.includes('Credits')) {
+                addMessageToUI('assistant', 'Contacte l\'administrateur pour obtenir plus de credits.');
             }
         } else {
             addMessageToUI('assistant', data.formatted || data.response);
@@ -165,30 +165,6 @@ function addMessageToUI(role, content, scroll = true) {
     container.appendChild(div);
 
     if (scroll) scrollToBottom();
-}
-
-function deleteChat(chatId, event) {
-    event.stopPropagation();
-    if (!confirm('Supprimer cette conversation ?')) return;
-
-    fetch(`/api/chat/${chatId}/delete`, { method: 'DELETE' })
-        .then(r => r.json())
-        .then(() => {
-            const item = document.querySelector(`.chat-item[data-chat-id="${chatId}"]`);
-            if (item) item.remove();
-            if (currentChatId == chatId) {
-                currentChatId = null;
-                const container = document.getElementById('chat-messages');
-                if (container) {
-                    container.innerHTML = `
-                        <div class="welcome-message" id="welcome-message">
-                            <div class="welcome-icon">&#x1F916;</div>
-                            <h2>Nouvelle conversation</h2>
-                            <p>Clique sur "Nouvelle conversation" pour commencer !</p>
-                        </div>`;
-                }
-            }
-        });
 }
 
 function scrollToBottom() {

@@ -2,14 +2,14 @@
 {% block content %}
 <div class="admin-layout">
     <div class="admin-sidebar">
-        <a href="{{ url_for('admin.dashboard') }}" class="active">&#x1F4CA; Tableau de bord</a>
-        <a href="{{ url_for('admin.users') }}">&#x1F464; Utilisateurs</a>
-        <a href="{{ url_for('admin.credits') }}">&#x1F4B0; Crédits</a>
-        <a href="{{ url_for('admin.chats') }}">&#x1F4AC; Conversations</a>
-        <a href="{{ url_for('admin.settings') }}">&#x2699;&#xFE0F; Paramètres</a>
+        <a href="{{ url_for('admin.dashboard') }}" class="active">Tableau de bord</a>
+        <a href="{{ url_for('admin.users') }}">Utilisateurs</a>
+        <a href="{{ url_for('admin.credits') }}">Credits</a>
+        <a href="{{ url_for('admin.chats') }}">Conversations</a>
+        <a href="{{ url_for('admin.settings') }}">Parametres</a>
     </div>
     <div class="admin-content">
-        <h1>&#x1F4CA; Tableau de bord</h1>
+        <h1>Tableau de bord</h1>
 
         <div class="stats-grid">
             <div class="stat-card">
@@ -30,11 +30,11 @@
             </div>
             <div class="stat-card">
                 <div class="stat-value">{{ stats.total_credits }}</div>
-                <div class="stat-label">Crédits en circulation</div>
+                <div class="stat-label">Credits en circulation</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value">{{ stats.credits_used }}</div>
-                <div class="stat-label">Messages envoyés</div>
+                <div class="stat-label">Messages envoyes</div>
             </div>
         </div>
 
@@ -45,7 +45,7 @@
                     <th>ID</th>
                     <th>Nom</th>
                     <th>Email</th>
-                    <th>Rôle</th>
+                    <th>Role</th>
                     <th>Date</th>
                 </tr>
             </thead>
